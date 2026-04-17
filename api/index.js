@@ -1,6 +1,6 @@
-const { createClient } = require('@supabase/supabase-client');
+const { createClient } = require('@supabase/supabase-js');
 
-// This pulls the keys from the Environment Variables you just set
+// These pull from your Vercel Environment Variables
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
