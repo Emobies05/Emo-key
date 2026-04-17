@@ -1,0 +1,8 @@
+{
+  "name": "emo-key",
+  "version": "1.0.0",
+  "description": "Emo Key Generator API",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
