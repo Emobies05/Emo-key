@@ -1,30 +1,29 @@
 const { createClient } = require('@supabase/supabase-client');
 
-// Replace these with your actual Supabase project details
-const supabaseUrl = 'https://pmamsuqpaphjrylgkaff.supabase.co'; 
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtYW1zdXFwYXBoanJ5bGdrYWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MzExNTIsImV4cCI6MjA5MjAwNzE1Mn0.DMMV7uUDvCx3TRpJbKVMIG5HSl0zyphgq8i3owaxpzI'; 
+// This pulls the keys from the Environment Variables you just set
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
-    // This takes the name from the URL, e.g., ?name=User1
-    const userName = req.query.name || 'Default_User';
-    const newKey = 'emo_' + Math.random().toString(36).substring(2, 10);
+    try {
+        const userName = req.query.name || 'Anonymous';
+        const newKey = 'emo_' + Math.random().toString(36).substring(2, 10);
 
-    const { data, error } = await supabase
-        .from('Emo-key')
-        .insert([{ 
-            key_value: newKey, 
-            user_name: userName 
-        }]);
+        const { data, error } = await supabase
+            .from('Emo-key')
+            .insert([{ 
+                key_value: newKey, 
+                user_name: userName 
+            }]);
 
-    if (error) {
-        return res.status(500).json({ error: error.message });
+        if (error) {
+            return res.status(400).json({ success: false, error: error.message });
+        }
+
+        return res.status(200).json({ success: true, key: newKey });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: err.message });
     }
-
-    res.status(200).json({ 
-        message: 'Success!', 
-        new_key: newKey,
-        user: userName 
-    });
 };
