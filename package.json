@@ -1,6 +1,4 @@
 {
-  "name": "emo-key",
-  "version": "1.0.0",
   "dependencies": {
     "@supabase/supabase-client": "^2.42.0"
   }
